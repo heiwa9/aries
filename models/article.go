@@ -189,7 +189,7 @@ func (Article) GetByPage(page *utils.Pagination, key string, state uint,
 	var list []Article
 
 	query := db.Db.Preload("Category").Preload("TagList").
-		Model(&Article{}).Order("is_top desc,order_id asc,created_at desc", true)
+		Model(&Article{}).Order("is_top desc,order_id desc,created_at desc", true)
 
 	if key != "" {
 		query = query.Where("title like concat('%',?,'%') or md_content like concat('%',?,'%')", key, key)

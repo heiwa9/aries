@@ -5,6 +5,7 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strings"
 	"time"
 
@@ -86,8 +87,12 @@ func (s *Setting) InitSetting() {
 	// 解决 GoLand 默认单元测试环境下，读取配置文件失败的问题
 	rootPath = strings.Replace(rootPath, "test", "", -1)
 	// 拼接配置文件访问路径
-	//yamlPath := filepath.Join(rootPath, "config", "develop.yaml") // 开发环境
-	yamlPath := filepath.Join("/root", ".aries", "aries.yaml") // 生产环境
+	var yamlPath string
+	if runtime.GOOS == "linux" {
+		yamlPath = filepath.Join("/root", ".aries", "aries.yaml") // 生产环境
+	} else {
+		yamlPath = filepath.Join(rootPath, "config", "aries.yaml") // 开发环境
+	}
 	log.Println("配置文件路径：", yamlPath)
 
 	// 读取配置文件
